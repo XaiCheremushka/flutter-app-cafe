@@ -48,7 +48,7 @@ class _DrinkCardState extends State<DrinkCard> {
             errorBuilder:
                 (BuildContext context, Object exception, StackTrace? stackTrace) {
                   return const Image(
-                    image: AssetImage('lib/src/assets/images/outdata_image.png'),
+                    image: AssetImage('lib/src/assets/images/outdata_image.jpg'),
                     height: 100
               );
             },
