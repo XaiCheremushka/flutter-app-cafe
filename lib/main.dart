@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_course/src/app.dart';
-import 'package:flutter_course/src/features/menu/view/menu_screen.dart';
 
 void main() {
   runZonedGuarded(() => runApp(const CoffeeShopApp()), (error, stack) {
@@ -11,6 +10,3 @@ void main() {
   });
 }
 
-// void main() {
-//   runApp(MenuScreen());
-// }

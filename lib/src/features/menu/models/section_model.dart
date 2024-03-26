@@ -1,11 +1,9 @@
-import 'package:flutter_course/src/features/menu/models/drink_model.dart';
-
 class SectionModel {
-  final String title;
-  final List<DrinkModel> drinks;
+  final int id;
+  final String slug;
 
   const SectionModel({
-    required this.title,
-    required this.drinks,
+    required this.id,
+    required this.slug,
   });
 }

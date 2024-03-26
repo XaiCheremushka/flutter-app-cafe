@@ -14,6 +14,12 @@ class MenuScreen extends StatefulWidget {
 
 class _MenuScreenState extends State<MenuScreen> {
   @override
+  void initState()  {
+    _loadDataProducts();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
@@ -53,15 +59,22 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 16),
-        child: ListView.separated(
-          separatorBuilder: (context, _) => SizedBox(height: 16),
-          itemCount: MenuData.section_db_example.length,
-          itemBuilder: (context, index) => Section(
-            data: MenuData.section_db_example[index],
-            key: ValueKey(MenuData.section_db_example[index].title),
-          ),
-        ),
+        child: MenuData.section_db_example == null
+            ? const Center(child: CircularProgressIndicator(),)
+            : ListView.separated(
+                separatorBuilder: (context, _) => SizedBox(height: 16),
+                itemCount: MenuData.section_db_example!.length,
+                itemBuilder: (context, index) => Section(
+                  data: MenuData.section_db_example![index],
+                  key: ValueKey(MenuData.section_db_example![index].slug),
+                ),
+              ),
       ),
     );
+  }
+
+  Future<void> _loadDataProducts() async {
+    await MenuData.initialData();
+    setState(() {});
   }
 }

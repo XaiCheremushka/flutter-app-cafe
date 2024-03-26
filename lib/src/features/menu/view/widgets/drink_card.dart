@@ -43,18 +43,18 @@ class _DrinkCardState extends State<DrinkCard> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image(
-            image: AssetImage(widget.data.img), // Возвращаем картинку напитка
+            image: NetworkImage(widget.data.img), // Возвращаем картинку напитка
             height: 100,
             errorBuilder:
                 (BuildContext context, Object exception, StackTrace? stackTrace) {
                   return const Image(
                     image: AssetImage('lib/src/assets/images/outdata_image.jpg'),
-                    height: 100
+                    height: 100,
               );
             },
           ),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
+            padding: const EdgeInsets.symmetric(vertical: 8),
             child: Text(
               widget.data.name, // Возвращаем имя напитка
               style: TextStyles.subtitle,
@@ -68,7 +68,7 @@ class _DrinkCardState extends State<DrinkCard> {
                   onPressed: _incrementCounter,
                   style: ButtonStyles.button_style,
                   child: Text(
-                    widget.data.cost,
+                    widget.data.price.price,
                     style: TextStyles.price,
                   ),
                 )
@@ -98,7 +98,7 @@ class _DrinkCardState extends State<DrinkCard> {
                         child: Text(
                           '$_counter',
                           style: TextStyles.price,
-                        )
+                        ),
                     ),
                     SizedBox(
                       width: 24,
@@ -115,7 +115,7 @@ class _DrinkCardState extends State<DrinkCard> {
                     ),
                   ],
                 ),
-          )
+          ),
         ],
       ),
     );
