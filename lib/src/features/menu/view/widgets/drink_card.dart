@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course/src/features/menu/data/data_buy_products.dart';
 
 import 'package:flutter_course/src/features/menu/models/drink_model.dart';
 
 import 'package:flutter_course/src/theme/app_colors.dart';
 import 'package:flutter_course/src/features/menu/data/styles.dart';
+import 'package:provider/provider.dart';
 
 class DrinkCard extends StatefulWidget {
   const DrinkCard({super.key, required this.data});
@@ -17,21 +19,28 @@ class DrinkCard extends StatefulWidget {
 class _DrinkCardState extends State<DrinkCard> {
   int _counter = 0;
 
-  void _incrementCounter() {
-    if(_counter < 10)
-      setState(() {
-        _counter++;
-      });
-  }
-  void _decrementCounter() {
-    if(_counter > 0)
-      setState(() {
-        _counter--;
-      });
-  }
-
   @override
   Widget build(BuildContext context) {
+    var dataProducts = Provider.of<DataBuyProducts>(context);
+
+    void _incrementCounter() {
+      if (_counter < 10) {
+        setState(() {
+          _counter++;
+        });
+        dataProducts.addNewProductData(widget.data);
+      }
+    }
+
+    void _decrementCounter() {
+      if (_counter > 0) {
+        setState(() {
+          _counter--;
+        });
+        dataProducts.removeProductData(widget.data);
+      }
+    }
+
     return Container(
       width: 180,
       height: 196,
@@ -45,11 +54,11 @@ class _DrinkCardState extends State<DrinkCard> {
           Image(
             image: NetworkImage(widget.data.img), // Возвращаем картинку напитка
             height: 100,
-            errorBuilder:
-                (BuildContext context, Object exception, StackTrace? stackTrace) {
-                  return const Image(
-                    image: AssetImage('lib/src/assets/images/outdata_image.jpg'),
-                    height: 100,
+            errorBuilder: (BuildContext context, Object exception,
+                StackTrace? stackTrace) {
+              return const Image(
+                image: AssetImage('lib/src/assets/images/outdata_image.jpg'),
+                height: 100,
               );
             },
           ),
@@ -63,31 +72,30 @@ class _DrinkCardState extends State<DrinkCard> {
           SizedBox(
             height: 24,
             width: 116,
-            child: _counter == 0 ?
-                TextButton(
-                  onPressed: _incrementCounter,
-                  style: ButtonStyles.button_style,
-                  child: Text(
-                    widget.data.price.price,
-                    style: TextStyles.price,
-                  ),
-                )
-                :
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: 24,
-                      child: TextButton(
-                        onPressed: _decrementCounter,
-                        style: ButtonStyles.button_style,
-                        child: const Text(
-                          '-',
-                          style: TextStyles.priceChange,
+            child: _counter == 0
+                ? TextButton(
+                    onPressed: _incrementCounter,
+                    style: ButtonStyles.button_style,
+                    child: Text(
+                      widget.data.price.price,
+                      style: TextStyles.price,
+                    ),
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: 24,
+                        child: TextButton(
+                          onPressed: _decrementCounter,
+                          style: ButtonStyles.button_style,
+                          child: const Text(
+                            '-',
+                            style: TextStyles.priceChange,
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
+                      Container(
                         width: 52,
                         height: 24,
                         alignment: Alignment.center,
@@ -99,22 +107,22 @@ class _DrinkCardState extends State<DrinkCard> {
                           '$_counter',
                           style: TextStyles.price,
                         ),
-                    ),
-                    SizedBox(
-                      width: 24,
-                      child: TextButton(
-                        onPressed: _incrementCounter,
-                        style: _counter == 10
-                            ? ButtonStyles.unactive_button_style
-                            : ButtonStyles.button_style,
-                        child: const Text(
-                          '+',
-                          style: TextStyles.priceChange,
+                      ),
+                      SizedBox(
+                        width: 24,
+                        child: TextButton(
+                          onPressed: _incrementCounter,
+                          style: _counter == 10
+                              ? ButtonStyles.unactive_button_style
+                              : ButtonStyles.button_style,
+                          child: const Text(
+                            '+',
+                            style: TextStyles.priceChange,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
           ),
         ],
       ),
