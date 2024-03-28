@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_course/src/features/menu/data/data_buy_products.dart';
+import 'package:flutter_course/src/features/menu/data/data_functions.dart';
+import 'package:flutter_course/src/features/menu/data/menu_repository.dart';
 import 'package:flutter_course/src/features/menu/data/styles.dart';
 import 'package:flutter_course/src/features/menu/models/drink_model.dart';
 import 'package:provider/provider.dart';
@@ -128,8 +130,32 @@ class _ShoppingCartState extends State<ShoppingCart> {
                       alignment: Alignment.center,
                       minimumSize: Size(double.infinity, 56),
                     ),
-                    onPressed: () {
-                      Navigator.pop(context); // Закрываем BottomSheet
+                    onPressed: () async {
+                      bool flagStatus = await MenuProductRepository.postDataInServer(DataFunctions.countingPurchases(products));
+                      if (flagStatus) {
+                        dataProducts.clearProductData(); //чистим корзину
+                        Navigator.pop(context); // Закрываем BottomSheet
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            duration: Duration(seconds: 2),
+                            content: Text(
+                              'Заказ создан',
+                              style: TextStyles.textInBottomSheet,
+                            ),
+                          )
+                        );
+                      } else {
+                        Navigator.pop(context); // Закрываем BottomSheet
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              duration: Duration(seconds: 2),
+                              content: Text(
+                                'Возникла ошибка при заказе',
+                                style: TextStyles.textInBottomSheet,
+                              ),
+                            )
+                        );
+                      }
                     },
                     child: const Text(
                       'Оформить заказ',
@@ -155,9 +181,7 @@ class _ShoppingCartState extends State<ShoppingCart> {
         backgroundColor: Color.fromRGBO(133, 195, 222, 1),
         foregroundColor: Colors.white,
         elevation: 8.0,
-        // Устанавливаем высоту тени кнопки
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        // Устанавливаем форму кнопки
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
